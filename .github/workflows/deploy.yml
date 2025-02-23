@@ -70,5 +70,5 @@ jobs:
           
       - name: Deploy to Minikube
         run: |
-          kubectl set image deployment/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER
+          kubectl set image deployment/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER -n default
 
