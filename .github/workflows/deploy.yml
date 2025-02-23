@@ -41,13 +41,21 @@ jobs:
         run: |
           docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER
 
+      - name: Fix Minikube Permissions
+        run: |
+          sudo chmod -R 755 /root/.minikube
+          sudo chown -R $USER:$USER /root/.minikube
+
       - name: Copy kubeconfig to Runner
         run: |
           mkdir -p ~/.kube
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
           chmod 600 ~/.kube/config
 
+      - name: Set Minikube Context
+        run: kubectl config use-context minikube
+
       - name: Deploy to Minikube
         run: |
-          kubectl set image deployment/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER
+          sudo kubectl set image deployment/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER
 
