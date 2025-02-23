@@ -63,6 +63,14 @@ jobs:
         run: |
           minikube status
 
+      - name: Setup Kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+          export KUBECONFIG=~/.kube/config
+          
+
       - name: Set KUBECONFIG for Minikube
         run: |
           echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
@@ -70,5 +78,5 @@ jobs:
           
       - name: Deploy to Minikube
         run: |
-          kubectl set image deployment/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER -n default
+          kubectl set image deployments.apps/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER -n default
 
