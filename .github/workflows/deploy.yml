@@ -43,9 +43,8 @@ jobs:
 
       - name: Fix Minikube Permissions
         run: |
-          sudo chmod -R 755 /root/.minikube
-          sudo chown -R $USER:$USER /root/.minikube
-
+          sudo chmod -R a+r ~/.minikube
+          sudo chmod -R a+r ~/.kube
       - name: Copy kubeconfig to Runner
         run: |
           mkdir -p ~/.kube
