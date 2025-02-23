@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION: us-east-1
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  ECR_REPO: eyego-assesment
+  ECR_REPO: eygo-app
   IMAGE_NAME: eyego
   MINIKUBE_IP: 192.168.49.2
 
