@@ -55,7 +55,20 @@ jobs:
       - name: Set Minikube Context
         run: kubectl config use-context minikube
 
+      - name: Start Minikube
+        run: |
+          minikube start --driver=docker
+
+      - name: Verify Minikube Status
+        run: |
+          minikube status
+
+      - name: Set KUBECONFIG for Minikube
+        run: |
+          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+          kubectl config use-context minikube
+          
       - name: Deploy to Minikube
         run: |
-          sudo kubectl set image deployment/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER
+          kubectl set image deployment/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER
 
