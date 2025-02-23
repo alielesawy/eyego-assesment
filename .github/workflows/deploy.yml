@@ -41,41 +41,17 @@ jobs:
         run: |
           docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER
 
-      - name: Fix Minikube Permissions
+      - name: Deploy to Minikube via SSH
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          EC2_HOST: ${{ secrets.EC2_PUBLIC_IP }}
+          EC2_USER: ubuntu  # Change if using another user
         run: |
-          sudo chmod -R a+r ~/.minikube
-          sudo chmod -R a+r ~/.kube
-      - name: Copy kubeconfig to Runner
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-          chmod 600 ~/.kube/config
-
-      - name: Set Minikube Context
-        run: kubectl config use-context minikube
-
-      - name: Start Minikube
-        run: |
-          minikube start --driver=docker
-
-      - name: Verify Minikube Status
-        run: |
-          minikube status
-
-      - name: Setup Kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-          chmod 600 ~/.kube/config
-          export KUBECONFIG=~/.kube/config
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
           
-
-      - name: Set KUBECONFIG for Minikube
-        run: |
-          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
-          kubectl config use-context minikube
-          
-      - name: Deploy to Minikube
-        run: |
-          kubectl set image deployments.apps/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER -n default
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $EC2_USER@$EC2_HOST << 'EOF'
+            export KUBECONFIG=/home/ubuntu/.kube/config
+            kubectl set image deployment/eyego-task eyego-task=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_RUN_NUMBER -n default
+          EOF
 
