@@ -44,11 +44,4 @@
 - Create `metallb-config.yaml`
 
 ### 8. Install NGINX Ingress Controller
-- Apply NGINX Ingress Controller manifest
-
-### Next Steps
-- Verify deployments
-- Test with curl
-- Open in browser
-
-🎯 **Now we can push everything to GitHub.** Let me know if you want a guide on setting up SSH authentication for GitHub. 🚀
+- Apply NGINX Ingress Controller manifest to expose to public ip
