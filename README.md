@@ -1,6 +1,6 @@
 # Eyego Task
 
-![Eyego Logo](img\eyego-logo.png)
+![Eyego Logo](img/eyego-logo.png)
 
 ## Tools
 - ![AWS Logo](img/icons8-aws-96.png)
