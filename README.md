@@ -1,5 +1,14 @@
 # Eyego Task
 
+![Eyego Logo](img\eyego-logo.png)
+
+## Tools
+- ![AWS Logo](img/icons8-aws-96.png)
+- ![Docker Logo](img/icons8-docker-96.png)
+- ![Kubernetes Logo](img/icons8-kubernetes-96.png)
+- ![GitHub Actions Logo](img/icons8-github-96.png)
+- ![NGINX Logo](img/icons8-nginx-96.png)
+- ![NodeJs Logo](img/icons8-nodejs-96.png)
 
 ## Project Steps
 
